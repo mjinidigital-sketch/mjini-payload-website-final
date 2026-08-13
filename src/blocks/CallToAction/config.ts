@@ -14,6 +14,19 @@ export const CallToAction: Block = {
   interfaceName: 'CallToActionBlock',
   fields: [
     {
+      name: 'heading',
+      type: 'text',
+      label: 'Heading',
+      defaultValue: 'Turn your vision into reality',
+    },
+    {
+      name: 'subtitle',
+      type: 'textarea',
+      label: 'Subtitle',
+      defaultValue:
+        'Join thousands of developers using our premium component library to ship beautiful UI in minutes, not hours.',
+    },
+    {
       name: 'richText',
       type: 'richText',
       editor: lexicalEditor({
@@ -27,9 +40,12 @@ export const CallToAction: Block = {
         },
       }),
       label: false,
+      admin: {
+        description: 'Optional rich text (displayed below heading & subtitle if provided)',
+      },
     },
     linkGroup({
-      appearances: ['default', 'outline'],
+      appearances: ['default', 'primary', 'accent', 'outline', 'outline-primary', 'outline-accent'],
       overrides: {
         maxRows: 2,
       },

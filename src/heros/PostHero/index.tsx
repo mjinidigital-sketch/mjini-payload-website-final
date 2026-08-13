@@ -1,9 +1,15 @@
-import { formatDateTime } from 'src/utilities/formatDateTime'
+'use client'
+
 import React from 'react'
+import { ArrowUpRight, CalendarDays, User } from 'lucide-react'
+import { format } from 'date-fns'
 
 import type { Post } from '@/payload-types'
-
+import { Badge } from '@/components/ui/badge'
+import { Avatar, AvatarFallback } from '@/components/ui/avatar'
+import AnimatedGridPattern from '@/components/animated-grid-pattern'
 import { Media } from '@/components/Media'
+import { cn } from '@/utilities/ui'
 import { formatAuthors } from '@/utilities/formatAuthors'
 
 export const PostHero: React.FC<{
@@ -11,63 +17,106 @@ export const PostHero: React.FC<{
 }> = ({ post }) => {
   const { categories, heroImage, populatedAuthors, publishedAt, title } = post
 
-  const hasAuthors =
-    populatedAuthors && populatedAuthors.length > 0 && formatAuthors(populatedAuthors) !== ''
+  const authorsToUse = (populatedAuthors || []).filter(
+    (author): author is NonNullable<NonNullable<Post['populatedAuthors']>[number]> =>
+      typeof author === 'object' && author !== null,
+  )
+
+  const authorsString = formatAuthors(authorsToUse) || ''
+  const hasAuthors = authorsString.length > 0
+  const firstCategory = categories?.[0]
 
   return (
-    <div className="relative -mt-[10.4rem] flex items-end">
-      <div className="container z-10 relative lg:grid lg:grid-cols-[1fr_48rem_1fr] text-white pb-8">
-        <div className="col-start-1 col-span-1 md:col-start-2 md:col-span-2">
-          <div className="uppercase text-sm mb-6">
-            {categories?.map((category, index) => {
-              if (typeof category === 'object' && category !== null) {
-                const { title: categoryTitle } = category
+    <section
+      className={cn(
+        'relative isolate flex min-h-[50svh] md:min-h-[60svh] flex-col items-center justify-center overflow-hidden border-b border-border bg-background px-6 py-24 md:py-28',
+      )}
+    >
+      {/* 1. Base Subtle Ambient Gradients (Primary & Accent) */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 -z-30 select-none overflow-hidden"
+      >
+        {/* Primary Color Glow (Top Left Offset) */}
+        <div
+          className="absolute -top-[20%] left-1/4 h-[60rem] w-[60rem] -translate-x-1/2 rounded-full opacity-[0.06] blur-[120px] dark:opacity-[0.09]"
+          style={{ backgroundColor: 'var(--primary, hsl(var(--primary)))' }}
+        />
+        {/* Accent Color Glow (Bottom Right Offset) */}
+        <div
+          className="absolute top-[20%] left-2/3 h-[60rem] w-[60rem] -translate-x-1/2 rounded-full opacity-[0.04] blur-[120px] dark:opacity-[0.07]"
+          style={{ backgroundColor: 'var(--accent, hsl(var(--accent)))' }}
+        />
+      </div>
 
-                const titleToUse = categoryTitle || 'Untitled category'
+      {/* 2. Interactive Animated Grid Pattern Overlay */}
+      <AnimatedGridPattern
+        duration={4}
+        maxOpacity={0.04}
+        numSquares={20}
+        className={cn(
+          'absolute inset-0 -z-20 h-full w-full',
+          '[mask-image:radial-gradient(ellipse_at_center,black_40%,transparent_70%)]',
+        )}
+      />
 
-                const isLast = index === categories.length - 1
+      <div className="relative z-10 mx-auto flex w-full max-w-4xl flex-col items-center text-center mt-20">
+        {/* Eyebrow Category / Badge Layout */}
+        {firstCategory && typeof firstCategory === 'object' && (
+          <Badge
+            variant="secondary"
+            className="mb-8 rounded-full border border-border/80 bg-background/50 px-4 py-1.5 text-xs font-medium tracking-wide text-foreground shadow-sm backdrop-blur-md transition-colors"
+          >
+            <span>{firstCategory.title}</span>
+            <ArrowUpRight className="ml-1.5 size-3.5 opacity-70" />
+          </Badge>
+        )}
 
-                return (
-                  <React.Fragment key={index}>
-                    {titleToUse}
-                    {!isLast && <React.Fragment>, &nbsp;</React.Fragment>}
-                  </React.Fragment>
-                )
-              }
-              return null
-            })}
-          </div>
-
-          <div className="">
-            <h1 className="mb-6 text-3xl md:text-5xl lg:text-6xl">{title}</h1>
-          </div>
-
-          <div className="flex flex-col md:flex-row gap-4 md:gap-16">
-            {hasAuthors && (
-              <div className="flex flex-col gap-4">
-                <div className="flex flex-col gap-1">
-                  <p className="text-sm">Author</p>
-
-                  <p>{formatAuthors(populatedAuthors)}</p>
-                </div>
-              </div>
+        {/* Core Typography Hierarchy Content Block */}
+        <div className="space-y-6 mt-8">
+          <h1
+            className={cn(
+              'mx-auto max-w-3xl font-bold tracking-tight text-foreground/90 text-pretty',
+              'text-5xl leading-[1.15] md:text-6xl lg:text-7xl',
             )}
-            {publishedAt && (
-              <div className="flex flex-col gap-1">
-                <p className="text-sm">Date Published</p>
+          >
+            {title}
+          </h1>
 
-                <time dateTime={publishedAt}>{formatDateTime(publishedAt)}</time>
+          {/* Sub-Header Metadata Row matching structural spacing guidelines */}
+          <div className="mx-auto flex flex-wrap items-center justify-center gap-4 pt-2 text-sm md:text-base text-muted-foreground font-medium">
+            <div className="flex items-center gap-2 bg-muted/40 px-3 py-1.5 rounded-full border border-border/50 backdrop-blur-sm">
+              <Avatar className="h-5 w-5 border">
+                <AvatarFallback className="text-[10px]">
+                  {hasAuthors ? authorsString.charAt(0) : 'D'}
+                </AvatarFallback>
+              </Avatar>
+              <span className="text-foreground text-xs md:text-sm font-semibold">
+                {hasAuthors ? authorsString : 'Mjini Digital'}
+              </span>
+            </div>
+
+            {publishedAt && (
+              <div className="flex items-center gap-1.5 text-xs md:text-sm bg-muted/40 px-3 py-1.5 rounded-full border border-border/50 backdrop-blur-sm">
+                <CalendarDays className="h-3.5 w-3.5 opacity-70" />
+                <span>Published {format(new Date(publishedAt), 'MMMM d, yyyy')}</span>
               </div>
             )}
           </div>
         </div>
-      </div>
-      <div className="min-h-[80vh] select-none">
+
+        {/* Integrated Hero Media Canvas Frame */}
         {heroImage && typeof heroImage !== 'string' && (
-          <Media fill priority imgClassName="-z-10 object-cover" resource={heroImage} />
+          <div className="mt-14 aspect-video w-full overflow-hidden rounded-2xl border border-border shadow-xl relative group">
+            <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent z-10 opacity-60 pointer-events-none" />
+            <Media
+              priority
+              imgClassName="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.02]"
+              resource={heroImage}
+            />
+          </div>
         )}
-        <div className="absolute pointer-events-none left-0 bottom-0 w-full h-1/2 bg-linear-to-t from-black to-transparent" />
       </div>
-    </div>
+    </section>
   )
 }

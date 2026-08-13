@@ -2,14 +2,12 @@ import React from 'react'
 
 import type { Page } from '@/payload-types'
 
-import { HighImpactHero } from '@/heros/HighImpact'
-import { LowImpactHero } from '@/heros/LowImpact'
-import { MediumImpactHero } from '@/heros/MediumImpact'
+import dynamic from 'next/dynamic'
 
 const heroes = {
-  highImpact: HighImpactHero,
-  lowImpact: LowImpactHero,
-  mediumImpact: MediumImpactHero,
+  highImpact: dynamic(() => import('@/heros/HighImpact').then((m) => m.HighImpactHero)),
+  lowImpact: dynamic(() => import('@/heros/LowImpact').then((m) => m.LowImpactHero)),
+  mediumImpact: dynamic(() => import('@/heros/MediumImpact').then((m) => m.MediumImpactHero)),
 }
 
 export const RenderHero: React.FC<Page['hero']> = (props) => {

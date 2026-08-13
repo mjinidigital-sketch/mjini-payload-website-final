@@ -26,6 +26,7 @@ import {
   PreviewField,
 } from '@payloadcms/plugin-seo/fields'
 import { slugField } from 'payload'
+import { seoFields } from '@/fields/seo'
 
 export const Posts: CollectionConfig<'posts'> = {
   slug: 'posts',
@@ -67,9 +68,33 @@ export const Posts: CollectionConfig<'posts'> = {
   },
   fields: [
     {
+      name: 'socialShareAction',
+      type: 'ui', // Clean interactive custom UI block type
+      admin: {
+        position: 'sidebar',
+        components: {
+          Field: '@/components/SocialShareButtonAdmin', // Links path directly to client component
+        },
+      },
+    },
+    {
       name: 'title',
       type: 'text',
       required: true,
+    },
+    {
+      name: 'subTitle',
+      type: 'text',
+    },
+    {
+      name: 'summary',
+      type: 'text',
+    },
+    {
+      name: 'postImages',
+      type: 'upload',
+      relationTo: 'media',
+      hasMany: true,
     },
     {
       type: 'tabs',
@@ -135,29 +160,7 @@ export const Posts: CollectionConfig<'posts'> = {
         {
           name: 'meta',
           label: 'SEO',
-          fields: [
-            OverviewField({
-              titlePath: 'meta.title',
-              descriptionPath: 'meta.description',
-              imagePath: 'meta.image',
-            }),
-            MetaTitleField({
-              hasGenerateFn: true,
-            }),
-            MetaImageField({
-              relationTo: 'media',
-            }),
-
-            MetaDescriptionField({}),
-            PreviewField({
-              // if the `generateUrl` function is configured
-              hasGenerateFn: true,
-
-              // field paths to match the target field for data
-              titlePath: 'meta.title',
-              descriptionPath: 'meta.description',
-            }),
-          ],
+          fields: seoFields,
         },
       ],
     },
@@ -188,7 +191,7 @@ export const Posts: CollectionConfig<'posts'> = {
         position: 'sidebar',
       },
       hasMany: true,
-      relationTo: 'users',
+      relationTo: 'authors',
     },
     // This field is only used to populate the user data via the `populateAuthors` hook
     // This is because the `user` collection has access control locked to protect user privacy

@@ -1,13 +1,15 @@
+// components/Footer/RowLabel.tsx
 'use client'
-import { Header } from '@/payload-types'
-import { RowLabelProps, useRowLabel } from '@payloadcms/ui'
 
-export const RowLabel: React.FC<RowLabelProps> = () => {
-  const data = useRowLabel<NonNullable<Header['navItems']>[number]>()
+import React from 'react'
+import { useRowLabel } from '@payloadcms/ui'
 
-  const label = data?.data?.link?.label
-    ? `Nav item ${data.rowNumber !== undefined ? data.rowNumber + 1 : ''}: ${data?.data?.link?.label}`
-    : 'Row'
+export const RowLabel = () => {
+  const { data, rowNumber } = useRowLabel<{ columnTitle?: string }>()
 
-  return <div>{label}</div>
+  const customLabel = data?.columnTitle
+    ? `Column: ${data.columnTitle}`
+    : `Column ${String(rowNumber).padStart(2, '0')}`
+
+  return <div>{customLabel}</div>
 }

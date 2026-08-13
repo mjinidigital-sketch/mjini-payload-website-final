@@ -3,7 +3,6 @@ import sharp from 'sharp'
 import path from 'path'
 import { buildConfig, PayloadRequest } from 'payload'
 import { fileURLToPath } from 'url'
-
 import { Categories } from './collections/Categories'
 import { Media } from './collections/Media'
 import { Pages } from './collections/Pages'
@@ -14,6 +13,14 @@ import { Header } from './Header/config'
 import { plugins } from './plugins'
 import { defaultLexical } from '@/fields/defaultLexical'
 import { getServerSideURL } from './utilities/getURL'
+import { Partners } from './collections/Partners'
+import { Services } from './collections/Services'
+import { Authors } from './collections/Authors'
+import { Projects } from './collections/Projects'
+import { Pricing } from './collections/Pricing'
+import { FAQs } from './collections/FAQs'
+import { Team } from './collections/Team'
+import { AgencySettings } from './OrganizationSettings'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -62,9 +69,22 @@ export default buildConfig({
       connectionString: process.env.DATABASE_URL || '',
     },
   }),
-  collections: [Pages, Posts, Media, Categories, Users],
+  collections: [
+    Pages,
+    Posts,
+    Media,
+    Categories,
+    Users,
+    Partners,
+    Services,
+    Authors,
+    Projects,
+    Pricing,
+    FAQs,
+    Team,
+  ],
   cors: [getServerSideURL()].filter(Boolean),
-  globals: [Header, Footer],
+  globals: [Header, Footer, AgencySettings],
   plugins,
   secret: process.env.PAYLOAD_SECRET,
   sharp,

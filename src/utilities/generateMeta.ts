@@ -24,16 +24,64 @@ export const generateMeta = async (args: {
 }): Promise<Metadata> => {
   const { doc } = args
 
-  const ogImage = getImageURL(doc?.meta?.image)
+  const meta = (doc?.meta as any) || {}
 
-  const title = doc?.meta?.title
-    ? doc?.meta?.title + ' | Payload Website Template'
-    : 'Payload Website Template'
+  const ogImage = getImageURL(meta.image)
+
+  const title = meta.title ? meta.title + ' | Mjini Digital' : 'Mjini Digital'
+
+  const description = meta.description
+  const url = Array.isArray(doc?.slug) ? doc?.slug.join('/') : doc?.slug || '/'
+  const serverUrl = getServerSideURL()
+  const fullUrl = `${serverUrl}/${url === 'home' || url === '/' ? '' : url}`
+
+  const { robots, social, customMetaTags, location } = meta
+
+  let robotsMeta: Metadata['robots'] = undefined
+  if (robots) {
+    robotsMeta = {
+      index: !robots.noIndex,
+      follow: !robots.noFollow,
+      noarchive: robots.noArchive,
+      noimageindex: robots.noImageIndex,
+    }
+  }
+
+  const canonicalUrl = robots?.canonicalUrl || fullUrl
+
+  let customOther: Record<string, string> = {}
+  if (Array.isArray(customMetaTags)) {
+    customMetaTags.forEach((tag) => {
+      if (tag.type && tag.key && tag.content) {
+        customOther[tag.key] = tag.content
+      }
+    })
+  }
+
+  if (location) {
+    if (location.latitude && location.longitude) {
+      customOther['ICBM'] = `${location.latitude}, ${location.longitude}`
+      customOther['geo.position'] = `${location.latitude};${location.longitude}`
+    }
+    if (location.placeName) {
+      customOther['geo.placename'] = location.placeName
+    }
+  }
+
+  const openGraphTitle = social?.ogTitle || title
+  const openGraphDescription = social?.ogDescription || description
+  const twitterTitle = social?.twitterTitle || title
+  const twitterDescription = social?.twitterDescription || description
 
   return {
-    description: doc?.meta?.description,
+    title,
+    description,
+    alternates: {
+      canonical: canonicalUrl,
+    },
+    robots: robotsMeta,
     openGraph: mergeOpenGraph({
-      description: doc?.meta?.description || '',
+      description: openGraphDescription || '',
       images: ogImage
         ? [
             {
@@ -41,9 +89,15 @@ export const generateMeta = async (args: {
             },
           ]
         : undefined,
-      title,
-      url: Array.isArray(doc?.slug) ? doc?.slug.join('/') : '/',
+      title: openGraphTitle,
+      url: fullUrl,
     }),
-    title,
+    twitter: {
+      card: social?.twitterCard || 'summary_large_image',
+      title: twitterTitle,
+      description: twitterDescription,
+      images: ogImage ? [ogImage] : undefined,
+    },
+    other: Object.keys(customOther).length > 0 ? customOther : undefined,
   }
 }

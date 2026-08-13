@@ -22,6 +22,9 @@ const nextConfig: NextConfig = {
       {
         pathname: '/api/media/file/**',
       },
+      {
+        pathname: '/mjini-logo-light.webp',
+      },
     ],
     qualities: [100],
     remotePatterns: [
@@ -33,6 +36,11 @@ const nextConfig: NextConfig = {
           protocol: url.protocol.replace(':', '') as 'http' | 'https',
         }
       }),
+      {
+        protocol: 'https',
+        hostname: 'pub-ceb124c82a29453d9bc61adcd9c60172.r2.dev',
+        pathname: '/**',
+      },
     ],
   },
   webpack: (webpackConfig) => {

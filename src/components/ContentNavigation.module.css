@@ -1,0 +1,59 @@
+.navContainer {
+  position: sticky;
+  top: 80px; /* offset from header */
+  max-height: calc(100vh - 120px);
+  overflow-y: auto;
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(12px);
+  border-radius: 12px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+}
+
+/* Mobile / tablet layout */
+@media (max-width: 1023px) {
+  .navContainer {
+    position: static;
+    max-height: none;
+    margin-bottom: 1rem;
+    background: rgba(255, 255, 255, 0.85);
+  }
+}
+
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.item {
+  margin: 0.25rem 0;
+}
+
+.link {
+  text-decoration: none;
+  color: #333;
+  font-size: 0.95rem;
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.link:hover {
+  color: #0070f3;
+  transform: translateX(4px);
+}
+
+.active .link {
+  color: #0070f3;
+  font-weight: 600;
+}
+
+/* Indentation based on heading level */
+.level2 {
+  padding-left: 0;
+}
+.level3 {
+  padding-left: 1rem;
+}
+.level4 {
+  padding-left: 2rem;
+}
