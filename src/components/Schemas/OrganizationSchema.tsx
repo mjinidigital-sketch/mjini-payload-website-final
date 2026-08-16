@@ -13,6 +13,7 @@ import type { Service, Pricing, Team } from '@/payload-types'
 // Props Interface — all fields optional for flexible per-page usage
 // ─────────────────────────────────────────────────────────────────────────────
 export interface OrganizationSchemaProps {
+  // Or
   /** Override the canonical base URL (defaults to env NEXT_PUBLIC_SERVER_URL) */
   url?: string
   /** Pass pre-fetched AgencySettings global to skip internal fetching */
@@ -59,6 +60,7 @@ export const organizationSchema = (props: OrganizationSchemaProps = {}) => {
   const geoSettings = settings?.geo
   const commerceSettings = settings?.commerce
   const leadershipSettings = settings?.leadership
+  const keywords = settings?.keywords
 
   // ── Brand & Identity resolution ──────────────────────────────────────────
   const name = identity?.name || ''
@@ -86,7 +88,9 @@ export const organizationSchema = (props: OrganizationSchemaProps = {}) => {
         ? identity.logo.url
         : `${baseUrl}${identity.logo.url.startsWith('/') ? '' : '/'}${identity.logo.url}`
     } else if (typeof identity.logo === 'string') {
-      logoUrl = identity.logo.startsWith('http') ? identity.logo : `${baseUrl}${identity.logo.startsWith('/') ? '' : '/'}${identity.logo}`
+      logoUrl = identity.logo.startsWith('http')
+        ? identity.logo
+        : `${baseUrl}${identity.logo.startsWith('/') ? '' : '/'}${identity.logo}`
     }
   }
 
@@ -119,7 +123,10 @@ export const organizationSchema = (props: OrganizationSchemaProps = {}) => {
       .map((item: any) => (typeof item === 'string' ? item : item?.name))
       .filter(Boolean)
   } else if (typeof identity?.alternateName === 'string') {
-    alternateNames = identity.alternateName.split(',').map((s: string) => s.trim()).filter(Boolean)
+    alternateNames = identity.alternateName
+      .split(',')
+      .map((s: string) => s.trim())
+      .filter(Boolean)
   }
   // No hardcoded fallback — alternateNames stays empty if not set in CMS
 
@@ -138,8 +145,8 @@ export const organizationSchema = (props: OrganizationSchemaProps = {}) => {
       availableLanguage: Array.isArray(cp.availableLanguage)
         ? cp.availableLanguage
         : cp.availableLanguage
-        ? [cp.availableLanguage]
-        : ['English', 'Swahili'],
+          ? [cp.availableLanguage]
+          : ['English', 'Swahili'],
       areaServed: cp.areaServed || 'Worldwide',
     }))
   } else if (Array.isArray(contact?.emails) && contact.emails.length > 0) {
@@ -152,10 +159,10 @@ export const organizationSchema = (props: OrganizationSchemaProps = {}) => {
         e.type === 'sales'
           ? 'sales'
           : e.type === 'support'
-          ? 'customer support'
-          : e.type === 'technical'
-          ? 'technical support'
-          : 'general',
+            ? 'customer support'
+            : e.type === 'technical'
+              ? 'technical support'
+              : 'general',
       availableLanguage: ['English', 'Swahili'],
       areaServed: 'Worldwide',
     }))
@@ -205,7 +212,9 @@ export const organizationSchema = (props: OrganizationSchemaProps = {}) => {
   const latitude = geoSettings?.latitude || identity?.geo?.latitude || ''
   const longitude = geoSettings?.longitude || identity?.geo?.longitude || ''
   const hasMap =
-    geoSettings?.googleMapsUrl || identity?.geo?.googleMapsUrl || `https://maps.google.com/?q=${latitude},${longitude}`
+    geoSettings?.googleMapsUrl ||
+    identity?.geo?.googleMapsUrl ||
+    `https://maps.google.com/?q=${latitude},${longitude}`
 
   // ── Social & Online Profiles ─────────────────────────────────────────────
   const rawSocialUrls: string[] = []
@@ -223,8 +232,7 @@ export const organizationSchema = (props: OrganizationSchemaProps = {}) => {
   const priceRange = commerceSettings?.priceRange || identity?.priceRange || ''
   const currenciesAccepted =
     commerceSettings?.currenciesAccepted || identity?.currenciesAccepted || ''
-  const paymentAccepted =
-    commerceSettings?.paymentAccepted || identity?.paymentAccepted || ''
+  const paymentAccepted = commerceSettings?.paymentAccepted || identity?.paymentAccepted || ''
 
   let openingHoursList: any[] = []
   if (Array.isArray(commerceSettings?.openingHours) && commerceSettings.openingHours.length > 0) {
@@ -262,7 +270,10 @@ export const organizationSchema = (props: OrganizationSchemaProps = {}) => {
   // No hardcoded fallback — area served stays empty if not set in CMS
 
   let keywordList: string[] = []
-  if (Array.isArray(commerceSettings?.defaultKeywords) && commerceSettings.defaultKeywords.length > 0) {
+  if (
+    Array.isArray(commerceSettings?.defaultKeywords) &&
+    commerceSettings.defaultKeywords.length > 0
+  ) {
     keywordList = commerceSettings.defaultKeywords
       .map((k: any) => (typeof k === 'string' ? k : k?.keyword))
       .filter(Boolean)
@@ -291,7 +302,10 @@ export const organizationSchema = (props: OrganizationSchemaProps = {}) => {
   }
 
   let founderNodes: any[] = []
-  if (Array.isArray(leadershipSettings?.teamFounders) && leadershipSettings.teamFounders.length > 0) {
+  if (
+    Array.isArray(leadershipSettings?.teamFounders) &&
+    leadershipSettings.teamFounders.length > 0
+  ) {
     // teamFounders is a relationship to 'team' collection — depth:2 populates full docs
     founderNodes = leadershipSettings.teamFounders
       .map((f: any) => {
@@ -304,14 +318,22 @@ export const organizationSchema = (props: OrganizationSchemaProps = {}) => {
   }
 
   // If teamFounders yielded nothing, fall back to custom founders array
-  if (founderNodes.length === 0 && Array.isArray(leadershipSettings?.founders) && leadershipSettings.founders.length > 0) {
+  if (
+    founderNodes.length === 0 &&
+    Array.isArray(leadershipSettings?.founders) &&
+    leadershipSettings.founders.length > 0
+  ) {
     founderNodes = leadershipSettings.founders.map((f: any) => {
       if (typeof f === 'object' && f !== null && 'name' in f) {
         return personSchema(f)
       }
       return personSchema({ name: String(f), jobTitle: 'Founder' })
     })
-  } else if (founderNodes.length === 0 && Array.isArray(identity?.founders) && identity.founders.length > 0) {
+  } else if (
+    founderNodes.length === 0 &&
+    Array.isArray(identity?.founders) &&
+    identity.founders.length > 0
+  ) {
     founderNodes = identity.founders.map((f: any) => {
       if (typeof f === 'object' && f !== null && 'name' in f) {
         return personSchema(f)
@@ -321,10 +343,10 @@ export const organizationSchema = (props: OrganizationSchemaProps = {}) => {
   }
 
   // Dynamic Employee / Team Member Person nodes sourced directly from Payload Teams collection
-  const employeeNodes: any[] = Array.isArray(props.teamMembers) && props.teamMembers.length > 0
-    ? props.teamMembers.map((m: any) => personSchema(m))
-    : []
-
+  const employeeNodes: any[] =
+    Array.isArray(props.teamMembers) && props.teamMembers.length > 0
+      ? props.teamMembers.map((m: any) => personSchema(m))
+      : []
 
   // No hardcoded fallback — founders stay empty if not set in CMS
 
@@ -407,9 +429,7 @@ export const organizationSchema = (props: OrganizationSchemaProps = {}) => {
         '@id': `${servicePageUrl}#offer-${plan.id || plan.planType || 'plan'}`,
         name: planTitle,
         description:
-          plan.features?.map((f: any) => f.feature).join(', ') ||
-          svc?.summary ||
-          shortDescription,
+          plan.features?.map((f: any) => f.feature).join(', ') || svc?.summary || shortDescription,
         url: servicePageUrl,
         price: formattedPrice,
         priceCurrency: plan.currency || 'KES',
@@ -582,14 +602,15 @@ export const organizationSchema = (props: OrganizationSchemaProps = {}) => {
         ...(reviewNodes.length > 0 ? { review: reviewNodes } : {}),
 
         // Founders, employees & team size
-        ...(founderNodes.length > 0 ? { founder: founderNodes.length === 1 ? founderNodes[0] : founderNodes } : {}),
+        ...(founderNodes.length > 0
+          ? { founder: founderNodes.length === 1 ? founderNodes[0] : founderNodes }
+          : {}),
         ...(employeeNodes.length > 0 ? { member: employeeNodes, employee: employeeNodes } : {}),
         numberOfEmployees: {
           '@type': 'QuantitativeValue',
           minValue: minEmp,
           maxValue: maxEmp,
         },
-
 
         // Awards & certifications
         award: awardList,
@@ -772,7 +793,6 @@ export const getOrganizationSchema = async (props: OrganizationSchemaProps = {})
   })
 }
 
-
 // ─────────────────────────────────────────────────────────────────────────────
 // React Server Component
 // ─────────────────────────────────────────────────────────────────────────────
@@ -817,4 +837,3 @@ export async function OrganizationSchema(props: OrganizationSchemaProps = {}) {
 }
 
 export default OrganizationSchema
-

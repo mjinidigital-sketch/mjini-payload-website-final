@@ -9,7 +9,7 @@ test.describe('Frontend', () => {
   })
 
   test('can load homepage', async ({ page }) => {
-    await page.goto('http://localhost:3000')
+    await page.goto('https://mjinidigital.co.ke')
     await expect(page).toHaveTitle(/Mjini Digital/)
     const heading = page.locator('h1').first()
     await expect(heading).toHaveText('Mjini Digital')

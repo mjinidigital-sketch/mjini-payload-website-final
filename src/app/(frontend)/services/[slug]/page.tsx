@@ -305,15 +305,25 @@ export async function generateMetadata({ params: paramsPromise }: Args): Promise
   const metaImageUrl =
     typeof meta.image === 'object' && meta.image !== null ? (meta.image as any).url : undefined
 
+  const serverUrl = getServerSideURL()
+  const canonicalUrl =
+    meta.robots?.canonicalUrl ||
+    meta.canonicalUrl ||
+    `${serverUrl}/services/${service.slug || decodedSlug}`
+
   return {
     title: meta.title || service.title,
     description: meta.description,
+
+    alternates: {
+      canonical: canonicalUrl,
+    },
 
     openGraph: {
       title: social.ogTitle || meta.title || service.title,
       description: social.ogDescription || meta.description,
       type: 'website',
-      url: `${getServerSideURL()}/services/${service.slug}`,
+      url: canonicalUrl,
       images: metaImageUrl ? [{ url: metaImageUrl }] : [],
     },
 

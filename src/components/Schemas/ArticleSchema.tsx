@@ -5,58 +5,80 @@ import { personSchema } from './PersonSchema'
 export const articleSchema = (props: any) => {
   const image = props.meta?.image as Media
   const authors = props.authors as (User | any)[]
-  const publisher = props.publisher?.[0] as any // Assuming first publisher object
   const url = getServerSideURL()
 
-  // Construct absolute image URL safely
-  const imageUrl = image?.filename
-    ? `${process.env.S3_ENDPOINT}/${process.env.S3_BUCKET}/${image.filename}`
-    : ''
+  const settings = props.agencySettings
+  const commerceSettings = settings?.commerce
+
+  // Safely format ISO strings to prevent application crashes
+  const formatDate = (dateString: any) => {
+    if (!dateString) return undefined
+    const date = new Date(dateString)
+    return isNaN(date.getTime()) ? undefined : date.toISOString()
+  }
+
+  // Construct absolute image URL safely using modern URL constructor
+  let imageUrl = ''
+  if (image?.filename && process.env.S3_ENDPOINT && process.env.S3_BUCKET) {
+    try {
+      imageUrl = new URL(`${process.env.S3_BUCKET}/${image.filename}`, process.env.S3_ENDPOINT).href
+    } catch {
+      imageUrl = `${process.env.S3_ENDPOINT}/${process.env.S3_BUCKET}/${image.filename}`
+    }
+  }
 
   return {
     '@context': 'https://schema.org',
     '@type': 'Article',
-    headline: props.title?.substring(0, 110), // Google limits headlines to 110 characters
+    headline: props.title?.substring(0, 110),
     description: props.excerpt || props.meta?.description,
     image: imageUrl ? [imageUrl] : [],
     articleBody: props.content,
     sameAs: props.socialLinks || [],
 
-    // ISO 8601 strings are strictly required instead of Date objects
-    datePublished: props.createdAt ? new Date(props.createdAt).toISOString() : undefined,
-    dateModified: props.updatedAt ? new Date(props.updatedAt).toISOString() : undefined,
+    // Uses safe formatting function
+    datePublished: formatDate(props.createdAt),
+    dateModified: formatDate(props.updatedAt),
 
-    // MainEntity establishes the canonical URL of the article for Google
     mainEntityOfPage: {
       '@type': 'WebPage',
-      '@id': `${url}/articles/${props.slug}`,
+      '@id': props.slug ? `${url}/${props?.path || ''}/${props.slug}` : url,
     },
 
-    // Dynamic Person schema integration for authors
-    author:
-      authors?.map((author: any) => {
-        if (typeof author === 'object' && author !== null && 'name' in author) {
-          return personSchema(author)
-        }
-        return {
-          '@type': 'Person',
-          name: String(author),
-        }
-      }) || [],
+    // Cleaner author extraction fallback loop
+    author: Array.isArray(authors)
+      ? authors.map((author: any) => {
+          if (author && typeof author === 'object') {
+            return personSchema(author)
+          }
+          return {
+            '@type': 'Person',
+            name: String(author || 'Anonymous'),
+          }
+        })
+      : [],
 
-
-    // Critical for News/Article visibility and E-E-A-T rankings
     publisher: {
       '@type': 'Organization',
-      name: publisher?.name || 'Your Brand Name',
+      name: settings?.identity?.name || 'Mjini Digital',
       url: url,
       logo: {
         '@type': 'ImageObject',
-        url: `${url}/logo.png`, // Must be a physical image asset
+        url: `${url}/logo.png`,
       },
     },
 
-    // Explode tags array into strings if available
-    keywords: props.tags?.map((tag: any) => tag.name).join(', ') || '',
+    // Strict string conversion for keywords mapping
+    keywords: [
+      ...new Set([
+        ...(commerceSettings?.defaultKeywords || []).map((k: any) => String(k?.keyword || k)),
+        'Mjini Digital',
+        'Web Design Kenya',
+        'SEO Agency Nairobi',
+        'Digital Marketing Africa',
+      ]),
+    ]
+      .filter(Boolean)
+      .join(', '),
   }
 }

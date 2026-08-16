@@ -122,9 +122,7 @@ export default async function Page(props: Args) {
     }),
   ])
 
-  const [personSchemas] = await Promise.all([
-    getPersonSchemas(),
-  ])
+  const [personSchemas] = await Promise.all([getPersonSchemas()])
 
   const dynamicSchema = [
     await getOrganizationSchema({ agencySettings, googleReviews: googleData }),
@@ -196,14 +194,24 @@ export async function generateMetadata(props: Args): Promise<Metadata> {
   const metaImageUrl =
     typeof meta.image === 'object' && meta.image !== null ? (meta.image as any).url : undefined
 
+  const serverUrl = getServerSideURL()
+  const isHome = slug === 'home' || slug === '/'
+  const canonicalUrl =
+    meta.robots?.canonicalUrl ||
+    meta.canonicalUrl ||
+    (isHome ? `${serverUrl}/` : `${serverUrl}/${slug}`)
+
   return {
     title: meta.title || page.title,
     description: meta.description,
+    alternates: {
+      canonical: canonicalUrl,
+    },
     openGraph: {
       title: social.ogTitle || meta.title || page.title,
       description: social.ogDescription || meta.description,
       type: 'website',
-      url: `${getServerSideURL()}/${slug}`,
+      url: canonicalUrl,
       images: metaImageUrl ? [{ url: metaImageUrl }] : [],
     },
     twitter: {

@@ -409,8 +409,18 @@ export default async function Page({ searchParams: searchParamsPromise }: Args) 
   )
 }
 
+import { getServerSideURL } from '@/utilities/getURL'
+
 export function generateMetadata(): Metadata {
+  const serverUrl = getServerSideURL()
   return {
     title: `Mjini Digital Search`,
+    alternates: {
+      canonical: `${serverUrl}/search`,
+    },
+    robots: {
+      index: false,
+      follow: true,
+    },
   }
 }

@@ -47,7 +47,7 @@ export const generateMeta = async (args: {
     }
   }
 
-  const canonicalUrl = robots?.canonicalUrl || fullUrl
+  const canonicalUrl = robots?.canonicalUrl || meta?.canonicalUrl || fullUrl
 
   let customOther: Record<string, string> = {}
   if (Array.isArray(customMetaTags)) {

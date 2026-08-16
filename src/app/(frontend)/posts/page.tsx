@@ -8,6 +8,8 @@ import { getPayload } from 'payload'
 import React from 'react'
 import PageClient from './page.client'
 
+import { getServerSideURL } from '@/utilities/getURL'
+
 export const dynamic = 'force-static'
 export const revalidate = 600
 
@@ -59,5 +61,8 @@ export default async function Page() {
 export function generateMetadata(): Metadata {
   return {
     title: `Mjini Digital Posts`,
+    alternates: {
+      canonical: `${getServerSideURL()}/posts`,
+    },
   }
 }

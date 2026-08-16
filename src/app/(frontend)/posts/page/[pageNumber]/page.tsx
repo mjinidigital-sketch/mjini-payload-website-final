@@ -62,10 +62,18 @@ export default async function Page({ params: paramsPromise }: Args) {
   )
 }
 
+import { getServerSideURL } from '@/utilities/getURL'
+
 export async function generateMetadata({ params: paramsPromise }: Args): Promise<Metadata> {
   const { pageNumber } = await paramsPromise
+  const serverUrl = getServerSideURL()
+  const canonicalUrl = `${serverUrl}/posts/page/${pageNumber || '1'}`
+
   return {
     title: `Mjini Digital Posts Page ${pageNumber || ''}`,
+    alternates: {
+      canonical: canonicalUrl,
+    },
   }
 }
 
