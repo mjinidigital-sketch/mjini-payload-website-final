@@ -326,6 +326,7 @@ export interface Page {
     | TitleBlock
     | ProjectArchiveBlock
     | ReviewsBlock
+    | UsefulLinksBlock
   )[];
   meta?: {
     title?: string | null;
@@ -1220,6 +1221,7 @@ export interface Service {
         | ReviewsBlock
         | BannerBlock
         | CodeBlock
+        | UsefulLinksBlock
       )[]
     | null;
   meta?: {
@@ -1496,6 +1498,43 @@ export interface CodeBlock {
   id?: string | null;
   blockName?: string | null;
   blockType: 'code';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "UsefulLinksBlock".
+ */
+export interface UsefulLinksBlock {
+  title?: string | null;
+  subTitle?: string | null;
+  description?: string | null;
+  selectMethod?: ('all' | 'manual') | null;
+  limit?: number | null;
+  links?:
+    | {
+        title: string;
+        description?: string | null;
+        type?: ('internal' | 'external') | null;
+        reference?:
+          | ({
+              relationTo: 'services';
+              value: number | Service;
+            } | null)
+          | ({
+              relationTo: 'pages';
+              value: number | Page;
+            } | null)
+          | ({
+              relationTo: 'posts';
+              value: number | Post;
+            } | null);
+        url?: string | null;
+        newTab?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'usefulLinksBlock';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -2065,6 +2104,7 @@ export interface PagesSelect<T extends boolean = true> {
         titleBlock?: T | TitleBlockSelect<T>;
         projectArchive?: T | ProjectArchiveBlockSelect<T>;
         reviewsBlock?: T | ReviewsBlockSelect<T>;
+        usefulLinksBlock?: T | UsefulLinksBlockSelect<T>;
       };
   meta?:
     | T
@@ -2409,6 +2449,30 @@ export interface ReviewsBlockSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "UsefulLinksBlock_select".
+ */
+export interface UsefulLinksBlockSelect<T extends boolean = true> {
+  title?: T;
+  subTitle?: T;
+  description?: T;
+  selectMethod?: T;
+  limit?: T;
+  links?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        type?: T;
+        reference?: T;
+        url?: T;
+        newTab?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "posts_select".
  */
 export interface PostsSelect<T extends boolean = true> {
@@ -2650,6 +2714,7 @@ export interface ServicesSelect<T extends boolean = true> {
         reviewsBlock?: T | ReviewsBlockSelect<T>;
         banner?: T | BannerBlockSelect<T>;
         code?: T | CodeBlockSelect<T>;
+        usefulLinksBlock?: T | UsefulLinksBlockSelect<T>;
       };
   meta?:
     | T

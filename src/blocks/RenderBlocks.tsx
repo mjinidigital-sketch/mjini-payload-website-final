@@ -21,6 +21,7 @@ import ReviewsBlockComponent from './ReviewsBlock/Component'
 import { FAQBlockComponent } from './FAQBlock/Component'
 import { BannerBlock } from './Banner/Component'
 import { CodeBlock } from './Code/Component'
+import { UsefulLinksBlockComponent } from './UsefulLinksBlock/Component'
 
 const blockComponents = {
   archive: ArchiveBlock,
@@ -42,6 +43,7 @@ const blockComponents = {
   faqsBlock: FAQBlockComponent,
   banner: BannerBlock,
   code: CodeBlock,
+  usefulLinksBlock: UsefulLinksBlockComponent,
 }
 
 export const RenderBlocks: React.FC<{

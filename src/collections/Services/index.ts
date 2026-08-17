@@ -34,6 +34,7 @@ import { TeamBlock } from '@/blocks/TeamBlock/config'
 import { ServiceArchiveBlock } from '@/blocks/ServiceArchiveBlock/config'
 import { ProjectArchiveBlock } from '@/blocks/ProjectArchiveBlock/config'
 import { Archive } from '@/blocks/ArchiveBlock/config'
+import { UsefulLinksBlock } from '@/blocks/UsefulLinksBlock/config'
 
 export const Services: CollectionConfig<'services'> = {
   slug: 'services',
@@ -206,6 +207,7 @@ export const Services: CollectionConfig<'services'> = {
                 ReviewsBlock,
                 Banner,
                 Code,
+                UsefulLinksBlock,
               ],
               admin: {
                 initCollapsed: true,

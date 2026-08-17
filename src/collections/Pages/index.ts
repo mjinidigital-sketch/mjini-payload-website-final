@@ -25,6 +25,7 @@ import { TitleBlock } from '@/blocks/TitleBlock/config'
 import { ProjectArchiveBlock } from '@/blocks/ProjectArchiveBlock/config'
 import { seoFields } from '@/fields/seo'
 import { ReviewsBlock } from '@/blocks/ReviewsBlock/config'
+import { UsefulLinksBlock } from '@/blocks/UsefulLinksBlock/config'
 
 export const Pages: CollectionConfig<'pages'> = {
   slug: 'pages',
@@ -106,6 +107,7 @@ export const Pages: CollectionConfig<'pages'> = {
                 TitleBlock,
                 ProjectArchiveBlock,
                 ReviewsBlock,
+                UsefulLinksBlock,
               ],
               required: true,
               admin: {

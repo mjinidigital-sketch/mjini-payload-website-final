@@ -1,4 +1,6 @@
 import type { Metadata } from 'next'
+import Link from 'next/link'
+import { ChevronRight, Home } from 'lucide-react'
 import { PayloadRedirects } from '@/components/PayloadRedirects'
 import configPromise from '@payload-config'
 import { getPayload } from 'payload'
@@ -232,6 +234,33 @@ export default async function Services({ params: paramsPromise }: Args) {
       <ServiceHero service={service} />
 
       <main className="border border-zinc-200 bg-white">
+        {/* Breadcrumb Navigation */}
+        <div className="container mx-auto max-w-7xl px-4 py-4 md:px-8">
+          <nav
+            aria-label="Breadcrumb"
+            className="flex items-center space-x-2 text-sm text-zinc-500"
+          >
+            <Link
+              href="/"
+              className="inline-flex items-center gap-1.5 text-zinc-500 hover:text-zinc-900 transition-colors"
+            >
+              <Home className="h-4 w-4" />
+              <span>Home</span>
+            </Link>
+            <ChevronRight className="h-3.5 w-3.5 text-zinc-400 shrink-0" aria-hidden="true" />
+            <Link href="/services" className="text-zinc-500 hover:text-zinc-900 transition-colors">
+              Services
+            </Link>
+            <ChevronRight className="h-3.5 w-3.5 text-zinc-400 shrink-0" aria-hidden="true" />
+            <span
+              aria-current="page"
+              className="font-medium text-zinc-900 truncate max-w-[200px] sm:max-w-md md:max-w-none"
+            >
+              {service.title}
+            </span>
+          </nav>
+        </div>
+        <RenderBlocks blocks={resolvedLayout as Page['layout']} />
         <div className="container mx-auto max-w-7xl px-4 md:px-8">
           <div className="grid grid-cols-1 gap-12 lg:grid-cols-[minmax(0,1fr)_280px] lg:gap-16 xl:gap-20">
             {/* Content Display Article */}
