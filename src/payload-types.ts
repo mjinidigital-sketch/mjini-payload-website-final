@@ -1500,6 +1500,29 @@ export interface UsefulLinksBlock {
   title?: string | null;
   subTitle?: string | null;
   description?: string | null;
+  links?:
+    | {
+        title: string;
+        description?: string | null;
+        type?: ('internal' | 'external') | null;
+        reference?:
+          | ({
+              relationTo: 'services';
+              value: number | Service;
+            } | null)
+          | ({
+              relationTo: 'pages';
+              value: number | Page;
+            } | null)
+          | ({
+              relationTo: 'posts';
+              value: number | Post;
+            } | null);
+        url?: string | null;
+        newTab?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'usefulLinksBlock';
@@ -2425,6 +2448,17 @@ export interface UsefulLinksBlockSelect<T extends boolean = true> {
   title?: T;
   subTitle?: T;
   description?: T;
+  links?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        type?: T;
+        reference?: T;
+        url?: T;
+        newTab?: T;
+        id?: T;
+      };
   id?: T;
   blockName?: T;
 }
