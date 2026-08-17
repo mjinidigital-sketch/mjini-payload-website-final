@@ -139,10 +139,15 @@ export const ServiceHero: React.FC<ServiceHeroProps> = ({
               <ArrowUpRight className="ml-1.5 size-4 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
             </CMSLink>
           ) : (
-            <Button size="lg" className=" group h-12 w-full rounded-full px-6 shadow-sm sm:w-auto">
-              Get Started
-              <ArrowUpRight className="ml-1.5 size-4 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-            </Button>
+            <Link href="/contact">
+              <Button
+                size="lg"
+                className=" group h-12 w-full rounded-full px-6 shadow-sm sm:w-auto"
+              >
+                Get Started
+                <ArrowUpRight className="ml-1.5 size-4 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+              </Button>
+            </Link>
           )}
 
           {secondaryLink ? (
@@ -152,18 +157,21 @@ export const ServiceHero: React.FC<ServiceHeroProps> = ({
               size="lg"
               className="h-12 w-full rounded-full px-6 sm:w-auto"
             >
-              <CirclePlay className="mr-2 size-4 text-muted-foreground transition-colors group-hover:text-foreground" />
+              <ArrowUpRight className="ml-1.5 size-4 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+
               {secondaryLink.label || 'Watch Demo'}
             </CMSLink>
           ) : (
-            <Button
-              size="lg"
-              variant="outline"
-              className=" border-2 border-accent h-12 w-full rounded-full px-6 sm:w-auto"
-            >
-              <CirclePlay className="text-accent mr-2 size-4 transition-colors group-hover:text-foreground" />
-              Watch Demo
-            </Button>
+            <Link href="/projects">
+              <Button
+                size="lg"
+                variant="outline"
+                className=" border-2 border-accent h-12 w-full rounded-full px-6 sm:w-auto"
+              >
+                <ArrowUpRight className="ml-1.5 size-4 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                Explore Our Projects
+              </Button>
+            </Link>
           )}
         </div>
 
