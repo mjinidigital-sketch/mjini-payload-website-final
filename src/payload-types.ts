@@ -1503,7 +1503,6 @@ export interface UsefulLinksBlock {
   links?:
     | {
         title: string;
-        description?: string | null;
         type?: ('internal' | 'external') | null;
         reference?:
           | ({
@@ -2452,7 +2451,6 @@ export interface UsefulLinksBlockSelect<T extends boolean = true> {
     | T
     | {
         title?: T;
-        description?: T;
         type?: T;
         reference?: T;
         url?: T;

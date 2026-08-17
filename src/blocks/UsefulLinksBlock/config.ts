@@ -37,11 +37,6 @@ export const UsefulLinksBlock: Block = {
           required: true,
         },
         {
-          name: 'description',
-          type: 'text',
-          label: 'Short Description',
-        },
-        {
           name: 'type',
           type: 'radio',
           defaultValue: 'internal',

@@ -8,7 +8,6 @@ import type { Page, Service, Post } from '@/payload-types'
 export type UsefulLinkItem = {
   id?: string | null
   title: string
-  description?: string | null
   type?: 'internal' | 'external' | null
   reference?:
     | {
@@ -27,7 +26,6 @@ export interface UsefulLinksBlockProps {
   blockName?: string | null
   title?: string | null
   subTitle?: string | null
-  description?: string | null
   links?: UsefulLinkItem[] | null
   disableInnerContainer?: boolean
   className?: string
@@ -79,7 +77,6 @@ export const UsefulLinksBlockComponent: React.FC<UsefulLinksBlockProps> = ({
   id,
   title,
   subTitle,
-  description,
   links,
   disableInnerContainer = false,
   className,
@@ -98,7 +95,7 @@ export const UsefulLinksBlockComponent: React.FC<UsefulLinksBlockProps> = ({
     ? 'w-full'
     : 'container max-w-7xl mx-auto px-4 md:px-8'
 
-  const hasHeader = Boolean(title || subTitle || description)
+  const hasHeader = Boolean(title || subTitle)
 
   return (
     <section
@@ -108,11 +105,7 @@ export const UsefulLinksBlockComponent: React.FC<UsefulLinksBlockProps> = ({
       <div className={containerClasses}>
         {hasHeader && (
           <div className="mb-10 text-center">
-            <Title
-              title={title || ''}
-              subTitle={subTitle || ''}
-              description={description || ''}
-            />
+            <Title title={title || ''} subTitle={subTitle || ''} />
           </div>
         )}
 
@@ -151,11 +144,6 @@ export const UsefulLinksBlockComponent: React.FC<UsefulLinksBlockProps> = ({
                     <span className="font-medium text-sm text-foreground truncate group-hover:text-primary transition-colors duration-200">
                       {link.title}
                     </span>
-                    {link.description && (
-                      <span className="text-xs text-muted-foreground truncate opacity-80 group-hover:opacity-100 transition-opacity duration-200">
-                        {link.description}
-                      </span>
-                    )}
                   </div>
                 </div>
 
