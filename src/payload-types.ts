@@ -1119,31 +1119,24 @@ export interface AboutBlock {
  * via the `definition` "CarouselBlock".
  */
 export interface CarouselBlock {
-  badgeText?: string | null;
-  badgeUrl?: string | null;
-  heading?: string | null;
-  description?: string | null;
-  links?:
+  title?: string | null;
+  subTitle?: string | null;
+  images?:
     | {
-        link: {
-          type?: ('reference' | 'custom') | null;
-          newTab?: boolean | null;
-          reference?:
-            | ({
-                relationTo: 'pages';
-                value: number | Page;
-              } | null)
-            | ({
-                relationTo: 'posts';
-                value: number | Post;
-              } | null);
-          url?: string | null;
-          label: string;
-          /**
-           * Choose how the link should be rendered.
-           */
-          appearance?: ('default' | 'primary' | 'accent' | 'outline' | 'outline-primary' | 'outline-accent') | null;
-        };
+        image: number | Media;
+        caption?: string | null;
+        alt?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  autoplay?: boolean | null;
+  autoplayInterval?: number | null;
+  showThumbnails?: boolean | null;
+  aspectRatio?: ('16/9' | '4/3' | '1/1' | '21/9') | null;
+  slides?:
+    | {
+        media?: (number | null) | Media;
+        caption?: string | null;
         id?: string | null;
       }[]
     | null;
@@ -1507,31 +1500,6 @@ export interface UsefulLinksBlock {
   title?: string | null;
   subTitle?: string | null;
   description?: string | null;
-  selectMethod?: ('all' | 'manual') | null;
-  limit?: number | null;
-  links?:
-    | {
-        title: string;
-        description?: string | null;
-        type?: ('internal' | 'external') | null;
-        reference?:
-          | ({
-              relationTo: 'services';
-              value: number | Service;
-            } | null)
-          | ({
-              relationTo: 'pages';
-              value: number | Page;
-            } | null)
-          | ({
-              relationTo: 'posts';
-              value: number | Post;
-            } | null);
-        url?: string | null;
-        newTab?: boolean | null;
-        id?: string | null;
-      }[]
-    | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'usefulLinksBlock';
@@ -2291,23 +2259,25 @@ export interface AboutBlockSelect<T extends boolean = true> {
  * via the `definition` "CarouselBlock_select".
  */
 export interface CarouselBlockSelect<T extends boolean = true> {
-  badgeText?: T;
-  badgeUrl?: T;
-  heading?: T;
-  description?: T;
-  links?:
+  title?: T;
+  subTitle?: T;
+  images?:
     | T
     | {
-        link?:
-          | T
-          | {
-              type?: T;
-              newTab?: T;
-              reference?: T;
-              url?: T;
-              label?: T;
-              appearance?: T;
-            };
+        image?: T;
+        caption?: T;
+        alt?: T;
+        id?: T;
+      };
+  autoplay?: T;
+  autoplayInterval?: T;
+  showThumbnails?: T;
+  aspectRatio?: T;
+  slides?:
+    | T
+    | {
+        media?: T;
+        caption?: T;
         id?: T;
       };
   media?: T;
@@ -2455,19 +2425,6 @@ export interface UsefulLinksBlockSelect<T extends boolean = true> {
   title?: T;
   subTitle?: T;
   description?: T;
-  selectMethod?: T;
-  limit?: T;
-  links?:
-    | T
-    | {
-        title?: T;
-        description?: T;
-        type?: T;
-        reference?: T;
-        url?: T;
-        newTab?: T;
-        id?: T;
-      };
   id?: T;
   blockName?: T;
 }

@@ -23,28 +23,10 @@ export const UsefulLinksBlock: Block = {
       type: 'textarea',
     },
     {
-      name: 'selectMethod',
-      type: 'select',
-      defaultValue: 'all',
-      options: [
-        { label: 'Show All Services (Dynamic)', value: 'all' },
-        { label: 'Manual Selection', value: 'manual' },
-      ],
-    },
-    {
-      name: 'limit',
-      type: 'number',
-      defaultValue: 8,
-      admin: {
-        condition: (_, siblingData) => siblingData.selectMethod === 'all',
-      },
-    },
-    {
       name: 'links',
       type: 'array',
       label: 'Links',
       admin: {
-        condition: (_, siblingData) => siblingData.selectMethod === 'manual',
         initCollapsed: true,
       },
       fields: [
