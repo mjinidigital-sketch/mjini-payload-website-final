@@ -92,7 +92,7 @@ export const UsefulLinksBlockComponent: React.FC<UsefulLinksBlockProps> = ({
   }
 
   const containerClasses = disableInnerContainer
-    ? 'w-full'
+    ? 'mx-auto container'
     : 'container max-w-7xl mx-auto px-4 md:px-8'
 
   const hasHeader = Boolean(title || subTitle)

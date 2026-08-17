@@ -13,6 +13,7 @@ import { getServerSideURL } from '@/utilities/getURL'
 import { Header } from '@/Header/Component'
 import Script from 'next/script'
 import GoogleMap from '@/components/Maps'
+
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const { isEnabled } = await draftMode()
 
@@ -27,9 +28,17 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         {children}
         <GoogleMap />
         <Footer />
+
+        {/* ✅ Next.js optimized Elfsight Script */}
         <Script
           src="https://static.elfsight.com/platform/platform.js"
           strategy="afterInteractive"
+        />
+
+        {/* ✅ Next.js optimized Tawk.to Script */}
+        <Script
+          src="https://embed.tawk.to/6a835d320532ca34496634f7/1k08k1dnp"
+          strategy="lazyOnload"
         />
       </body>
     </html>

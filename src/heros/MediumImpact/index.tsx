@@ -119,7 +119,7 @@ export const MediumImpactHero: React.FC<Page['hero']> = ({ links, media, richTex
                 size="lg"
                 className="text-sm font-semibold inline-flex items-center gap-2 rounded-full border-2 border-[#face1c] bg-white/40 backdrop-blur-sm text-slate-800 hover:bg-[#face1c] hover:text-slate-900 shadow-md transition-all transform hover:-translate-y-0.5 px-6 py-3"
               >
-                <CirclePlay className="h-5 w-5 bg-[#face1c] rounded-full text-[#870aca] hidden md:block" />
+                <ArrowUpRight className="ml-1.5 size-4 text-[#870aca]" />
               </CMSLink>
             )}
           </div>
