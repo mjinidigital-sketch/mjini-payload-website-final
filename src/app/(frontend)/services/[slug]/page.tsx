@@ -260,7 +260,7 @@ export default async function Services({ params: paramsPromise }: Args) {
             </span>
           </nav>
         </div>
-        <RenderBlocks blocks={resolvedLayout as Page['layout']} />
+
         <div className="container mx-auto max-w-7xl px-4 md:px-8">
           <div className="grid grid-cols-1 gap-12 lg:grid-cols-[minmax(0,1fr)_280px] lg:gap-16 xl:gap-20">
             {/* Content Display Article */}
