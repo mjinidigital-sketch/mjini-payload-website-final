@@ -91,6 +91,7 @@ export function PartnersSlider({
                         src={partner.logo.url}
                         alt={partner.logo.alt || partner.name}
                         fill
+                        sizes="(max-width: 768px) 100vw, 224px"
                         className="object-contain"
                       />
                     </div>

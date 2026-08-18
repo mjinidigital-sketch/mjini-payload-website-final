@@ -3382,7 +3382,7 @@ export interface AgencyContact {
         contactType: 'sales' | 'customer support' | 'technical support' | 'billing' | 'general';
         telephone?: string | null;
         email?: string | null;
-        availableLanguage?: ('English' | 'Swahili' | 'French' | 'Arabic')[] | null;
+        availableLanguage?: string | null;
         areaServed?: string | null;
         id?: string | null;
       }[]

@@ -200,11 +200,12 @@ export const getPersonSchema = async (options: GetPersonSchemaOptions = {}) => {
     })
 
     if (teamRes.docs && teamRes.docs.length > 0) {
-      const colleagueSlugs = teamRes.docs.map((m) =>
+      const validDocs = teamRes.docs.filter((m) => Boolean(m?.name))
+      const colleagueSlugs = validDocs.map((m) =>
         m.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, ''),
       )
 
-      const personSchemas = teamRes.docs.map((member) => {
+      const personSchemas = validDocs.map((member) => {
         const memberSlug = member.name
           .toLowerCase()
           .replace(/[^a-z0-9]+/g, '-')

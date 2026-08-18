@@ -406,7 +406,8 @@ export const organizationSchema = (props: OrganizationSchemaProps = {}) => {
     // One Offer per pricing plan, linked back to its service
     offerNodes = pricingList.map((plan) => {
       const svc = serviceList.find((s) => {
-        const svcId = typeof plan.service === 'object' ? (plan.service as any)?.id : plan.service
+        if (!s || !s.id) return false
+        const svcId = typeof plan.service === 'object' && plan.service !== null ? (plan.service as any)?.id : plan.service
         return svcId && String(svcId) === String(s.id)
       })
       const serviceSlug = svc?.slug || ''

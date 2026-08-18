@@ -311,9 +311,9 @@ export const productSchema = (props: ProductSchemaInputProps = {}) => {
   if (serviceList.length > 1) {
     return serviceList.map((svc) => {
       const matchedPricings = pricingList.filter((p) => {
-        if (!p.service) return false
-        const svcId = typeof p.service === 'object' ? p.service.id : p.service
-        return String(svcId) === String(svc.id)
+        if (!p || !p.service) return false
+        const svcId = typeof p.service === 'object' && p.service !== null ? (p.service as any).id : p.service
+        return svc && svc.id && String(svcId) === String(svc.id)
       })
       return buildSingleProductSchema(svc, matchedPricings)
     })
@@ -323,9 +323,9 @@ export const productSchema = (props: ProductSchemaInputProps = {}) => {
   const singleSvc = serviceList[0] || null
   const matchedPricings = singleSvc
     ? pricingList.filter((p) => {
-        if (!p.service) return false
-        const svcId = typeof p.service === 'object' ? p.service.id : p.service
-        return String(svcId) === String(singleSvc.id)
+        if (!p || !p.service) return false
+        const svcId = typeof p.service === 'object' && p.service !== null ? (p.service as any).id : p.service
+        return singleSvc && singleSvc.id && String(svcId) === String(singleSvc.id)
       })
     : pricingList
 

@@ -35,9 +35,14 @@ export const ProjectArchiveBlockComponent: React.FC<ProjectArchiveBlock> = async
     projects = fetchedProjects.docs
   } else {
     if (selectedDocs?.length) {
-      const filteredSelectedProjects = selectedDocs.map((project: { value: any }) => {
-        if (typeof project.value === 'object') return project.value
-      }) as Project[]
+      const filteredSelectedProjects = selectedDocs
+        .map((project: any) => {
+          if (typeof project === 'object' && project !== null) {
+            return project.value && typeof project.value === 'object' ? project.value : project
+          }
+          return null
+        })
+        .filter((doc): doc is Project => Boolean(doc && typeof doc === 'object' && doc.id))
 
       projects = filteredSelectedProjects
     }

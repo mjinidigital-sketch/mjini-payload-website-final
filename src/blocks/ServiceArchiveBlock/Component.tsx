@@ -35,9 +35,14 @@ export const ServiceArchiveBlockComponent: React.FC<ServiceArchiveBlock> = async
     services = fetchedServices.docs
   } else {
     if (selectedDocs?.length) {
-      const filteredSelectedServices = selectedDocs.map((service: { value: any }) => {
-        if (typeof service.value === 'object') return service.value
-      }) as Service[]
+      const filteredSelectedServices = selectedDocs
+        .map((service: any) => {
+          if (typeof service === 'object' && service !== null) {
+            return service.value && typeof service.value === 'object' ? service.value : service
+          }
+          return null
+        })
+        .filter((doc): doc is Service => Boolean(doc && typeof doc === 'object' && doc.id))
 
       services = filteredSelectedServices
     }

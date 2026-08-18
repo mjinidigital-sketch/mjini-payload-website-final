@@ -9,6 +9,20 @@ import { cn } from '@/utilities/ui'
 import { CMSLink } from '@/components/Link'
 import { Media } from './Media'
 
+const normalizeIconName = (name?: string | null): IconName => {
+  if (!name) return 'circle-check' as IconName
+  const clean = name.trim().toLowerCase()
+  const aliasMap: Record<string, string> = {
+    responsive: 'monitor-smartphone',
+    'hands-shake': 'handshake',
+    handsshake: 'handshake',
+    checkcircle: 'circle-check',
+    'check-circle': 'circle-check',
+  }
+  if (aliasMap[clean]) return aliasMap[clean] as IconName
+  return clean.replace(/([a-z])([A-Z])/g, '$1-$2').replace(/[\s_]+/g, '-') as IconName
+}
+
 export default function AboutComponent({
   heading,
   subheading,
@@ -87,7 +101,11 @@ export default function AboutComponent({
                 >
                   <div className="flex items-center gap-2 py-1  divide-accent">
                     {item.icon && (
-                      <DynamicIcon name={item.icon as IconName} className="size-5 text-accent  " />
+                      <DynamicIcon
+                        name={normalizeIconName(item.icon)}
+                        fallback={() => <ArrowRight className="size-5 text-accent" />}
+                        className="size-5 text-accent"
+                      />
                     )}
                     {item.value}
                   </div>

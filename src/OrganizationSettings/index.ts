@@ -207,15 +207,9 @@ export const AgencySettings: GlobalConfig = {
                     },
                     {
                       name: 'availableLanguage',
-                      type: 'select',
-                      hasMany: true,
-                      options: [
-                        { label: 'English', value: 'English' },
-                        { label: 'Swahili', value: 'Swahili' },
-                        { label: 'French', value: 'French' },
-                        { label: 'Arabic', value: 'Arabic' },
-                      ],
-                      defaultValue: ['English', 'Swahili'],
+                      type: 'text',
+                      label: 'Available Languages (e.g., English, Swahili)',
+                      defaultValue: 'English, Swahili',
                     },
                     {
                       name: 'areaServed',

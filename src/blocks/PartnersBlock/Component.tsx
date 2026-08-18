@@ -33,39 +33,45 @@ export const PartnersBlock: React.FC<PartnersBlockProps> = async (props) => {
   if (partnerRelations && partnerRelations.length > 0) {
     const payload = await getPayload({ config: configPromise })
 
-    const partnerIds = partnerRelations.map((partner) => {
-      if (typeof partner === 'object') return partner.id
-      else return partner
-    })
+    const partnerIds = partnerRelations
+      .map((partner) => {
+        if (typeof partner === 'object' && partner !== null) return partner.id
+        else return partner
+      })
+      .filter(Boolean)
 
-    // depth: 2 ensures projectPartners resolves to the full Project doc
-    const fetchedPartners = await payload.find({
-      collection: 'partners',
-      depth: 2,
-      where: {
-        id: {
-          in: partnerIds,
+    if (partnerIds.length > 0) {
+      // depth: 2 ensures projectPartners resolves to the full Project doc
+      const fetchedPartners = await payload.find({
+        collection: 'partners',
+        depth: 2,
+        where: {
+          id: {
+            in: partnerIds,
+          },
         },
-      },
-    })
+      })
 
-    partners = fetchedPartners.docs.map((partner: any) => {
-      const project = partner.projectPartners as Project | number | undefined
+      partners = (fetchedPartners.docs || []).map((partner: any, index: number) => {
+        const project = partner?.projectPartners as Project | number | undefined
 
-      // Fall back gracefully in case depth didn't resolve or the relation is empty
-      const companyName =
-        project && typeof project === 'object' ? project.companyName || project.title : ''
+        // Fall back gracefully in case depth didn't resolve or the relation is empty
+        const companyName =
+          project && typeof project === 'object' && project !== null
+            ? project.companyName || project.title
+            : ''
 
-      return {
-        id: partner.id.toString(),
-        name: companyName || '',
-        logo: {
-          url: (partner.logo as Media)?.url || '',
-          alt: (partner.logo as Media)?.alt || companyName || '',
-        },
-        website: partner.website,
-      }
-    })
+        return {
+          id: partner?.id ? partner.id.toString() : `partner-${index}`,
+          name: companyName || '',
+          logo: {
+            url: (partner?.logo as Media)?.url || '',
+            alt: (partner?.logo as Media)?.alt || companyName || '',
+          },
+          website: partner?.website || '',
+        }
+      })
+    }
   }
 
   return (
