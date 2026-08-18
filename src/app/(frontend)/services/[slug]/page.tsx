@@ -271,12 +271,12 @@ export default async function Services({ params: paramsPromise }: Args) {
                 [&_h2]:mb-5 [&_h2]:mt-0 [&_h2]:border-b [&_h2]:border-zinc-200 [&_h2]:pb-3 [&_h2]:text-3xl [&_h2]:font-bold [&_h2]:leading-tight [&_h2]:tracking-tight [&_h2]:text-zinc-950 md:[&_h2]:text-4xl
                 [&_h3]:mb-4 [&_h3]:mt-10 [&_h3]:text-2xl [&_h3]:font-semibold [&_h3]:leading-tight [&_h3]:tracking-tight [&_h3]:text-zinc-950
                 [&_h4]:mb-3 [&_h4]:mt-8 [&_h4]:text-xl [&_h4]:font-semibold [&_h4]:leading-tight [&_h4]:text-zinc-950
-                [&_p]:mb-6 [&_p]:text-base [&_p]:leading-8 [&_p]:text-zinc-700 md:[&_p]:text-[18px]
+                [&_p]:mb-6 [&_p]:text-base [&_p]:leading-8 [&_p]:text-zinc-800 md:[&_p]:text-[18px]
                 [&_strong]:font-semibold [&_strong]:text-zinc-950
                 [&_em]:italic
-                [&_a]:font-medium [&_a]:text-zinc-950 [&_a]:underline [&_a]:underline-offset-4 [&_a]:transition-opacity [&_a]:hover:opacity-60
-                [&_ul]:mb-7 [&_ul]:space-y-2 [&_ul]:pl-6 [&_ul]:list-disc
-                [&_ol]:mb-7 [&_ol]:space-y-2 [&_ol]:pl-6 [&_ol]:list-decimal
+                [&_a]:font-medium [&_a]:text-primary [&_a]:text-decoration-none [&_a]:transition-opacity [&_a]:hover:opacity-60
+                [&_ul]:mb-6 [&_ul]:space-y-2 [&_ul]:pl-6 [&_ul]:list-disc
+                [&_ol]:mb-6 [&_ol]:space-y-2 [&_ol]:pl-6 [&_ol]:list-decimal
                 [&_li]:pl-1 [&_li]:leading-7
                 [&_blockquote]:my-8 [&_blockquote]:border-l-2 [&_blockquote]:border-zinc-900 [&_blockquote]:pl-6 [&_blockquote]:text-lg [&_blockquote]:italic [&_blockquote]:text-zinc-700
                 [&_hr]:my-10 [&_hr]:border-zinc-200
