@@ -159,25 +159,12 @@ export const CallToActionBlock: React.FC<CTABlockProps> = (props) => {
                     {...link}
                     className={
                       isPrimary
-                        ? 'bg-neutral-950 text-white hover:bg-neutral-950/90'
-                        : 'border-white/60 bg-white/50 text-black hover:bg-white/80 dark:border-white/60 dark:bg-white/50 dark:text-black dark:hover:bg-white/80'
+                        ? 'rounded-full border-2 border-accent bg-accent text-primary hover:bg-accent/80 '
+                        : 'rounded-full border-2 border-primary bg-white/80 text-primary hover:bg-accent/90'
                     }
                   />
                 )
               }
-
-              // Fallback: render plain Button with default labels
-              return (
-                <Button
-                  key={i}
-                  className={isPrimary ? 'rounded-full' : 'rounded-full border-2 border-accent'}
-                  size="lg"
-                  variant={isPrimary ? 'default' : 'outline'}
-                >
-                  {link.label}
-                  {isPrimary && <ArrowUpRight />}
-                </Button>
-              )
             })}
           </div>
         </div>
