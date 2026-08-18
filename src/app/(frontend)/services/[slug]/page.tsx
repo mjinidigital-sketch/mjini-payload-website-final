@@ -266,27 +266,66 @@ export default async function Services({ params: paramsPromise }: Args) {
             {/* Content Display Article */}
             <article
               className="
-                mx-auto w-full max-w-4xl text-zinc-600
-                [&_h1]:mb-6 [&_h1]:mt-0 [&_h1]:text-4xl [&_h1]:font-bold [&_h1]:leading-[1.1] [&_h1]:tracking-tight [&_h1]:text-zinc-950 md:[&_h1]:text-5xl
-                [&_h2]:mb-5 [&_h2]:mt-0 [&_h2]:border-b [&_h2]:border-zinc-200 [&_h2]:pb-3 [&_h2]:text-3xl [&_h2]:font-bold [&_h2]:leading-tight [&_h2]:tracking-tight [&_h2]:text-zinc-950 md:[&_h2]:text-4xl
-                [&_h3]:mb-4 [&_h3]:mt-10 [&_h3]:text-2xl [&_h3]:font-semibold [&_h3]:leading-tight [&_h3]:tracking-tight [&_h3]:text-zinc-950
-                [&_h4]:mb-3 [&_h4]:mt-8 [&_h4]:text-xl [&_h4]:font-semibold [&_h4]:leading-tight [&_h4]:text-zinc-950
-                [&_p]:mb-6 [&_p]:text-base [&_p]:leading-8 [&_p]:text-zinc-700 md:[&_p]:text-[18px]
-                [&_strong]:font-semibold [&_strong]:text-zinc-950
-                [&_em]:italic
-                [&_a]:font-medium [&_a]:text-zinc-950 [&_a]:underline [&_a]:underline-offset-4 [&_a]:transition-opacity [&_a]:hover:opacity-60
-                [&_ul]:mb-7 [&_ul]:space-y-2 [&_ul]:pl-6 [&_ul]:list-disc
-                [&_ol]:mb-7 [&_ol]:space-y-2 [&_ol]:pl-6 [&_ol]:list-decimal
-                [&_li]:pl-1 [&_li]:leading-7
-                [&_blockquote]:my-8 [&_blockquote]:border-l-2 [&_blockquote]:border-zinc-900 [&_blockquote]:pl-6 [&_blockquote]:text-lg [&_blockquote]:italic [&_blockquote]:text-zinc-700
-                [&_hr]:my-10 [&_hr]:border-zinc-200
-                [&_img]:my-8 [&_img]:rounded-2xl [&_img]:border [&_img]:border-zinc-200
-              "
+    prose prose-zinc max-w-4xl mx-auto w-full
+
+    prose-headings:font-bold
+    prose-headings:tracking-tight
+    prose-headings:text-zinc-950
+
+    prose-h1:mb-6
+    prose-h1:mt-0
+    prose-h1:text-4xl
+    prose-h1:leading-[1.1]
+    md:prose-h1:text-5xl
+
+    prose-h2:mb-5
+    prose-h2:mt-12
+    prose-h2:border-b
+    prose-h2:border-zinc-200
+    prose-h2:pb-3
+    prose-h2:text-3xl
+    md:prose-h2:text-4xl
+
+    prose-h3:mt-10
+    prose-h3:mb-4
+    prose-h3:text-2xl
+
+    prose-h4:mt-8
+    prose-h4:mb-3
+    prose-h4:text-xl
+
+    prose-p:text-zinc-700
+    prose-p:leading-8
+    prose-p:text-base
+    md:prose-p:text-[18px]
+
+    prose-strong:text-zinc-950
+    prose-strong:font-semibold
+
+    prose-a:text-zinc-950
+    prose-a:font-medium
+    prose-a:underline
+    prose-a:underline-offset-4
+
+    prose-ul:my-6
+    prose-ol:my-6
+    prose-li:leading-7
+
+    prose-blockquote:border-zinc-900
+    prose-blockquote:text-zinc-700
+
+    prose-hr:border-zinc-200
+    prose-hr:my-10
+
+    prose-img:rounded-2xl
+    prose-img:border
+    prose-img:border-zinc-200
+  "
             >
-              <hr className="w-[80px] h-2 bg-accent -mb-2" />
+              <hr className="not-prose h-2 w-[80px] border-0 bg-accent -mb-2" />
+
               <RichText data={service.content} enableGutter={false} enableProse={false} />
 
-              {/* Social Share — meta values passed server‑side so they match OG tags */}
               <SocialShareButtons
                 url={serviceUrl}
                 title={service.meta?.title || service.title}

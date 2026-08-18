@@ -35,7 +35,6 @@ import { ServiceArchiveBlock } from '@/blocks/ServiceArchiveBlock/config'
 import { ProjectArchiveBlock } from '@/blocks/ProjectArchiveBlock/config'
 import { Archive } from '@/blocks/ArchiveBlock/config'
 import { UsefulLinksBlock } from '@/blocks/UsefulLinksBlock/config'
-import { ProcessBlock } from '@/blocks/ProcessBlock/config'
 
 export const Services: CollectionConfig<'services'> = {
   slug: 'services',
