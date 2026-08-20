@@ -8,6 +8,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
+import Title from '../Title'
 
 export type Props = {
   posts?: CardPostData[]
@@ -18,29 +19,13 @@ export const CollectionArchive: React.FC<Props> = (props) => {
   const { posts, relationTo = 'posts' } = props
 
   return (
-    <section className="mx-auto max-w-7xl px-6 py-16">
+    <section className="mx-auto max-w-7xl py-16 border-b border-border">
       {/* Header Layout matches Reference Design */}
-      <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-12">
-        <div>
-          <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
-            Welcome to our blog!
-          </h2>
-          <p className="mt-3 text-lg text-muted-foreground">
-            Stay updated with the latest news and insights.
-          </p>
-        </div>
-
-        {/* Category Filter dropdown from the target UI */}
-        <div className="w-full md:w-[200px]">
-          <Select defaultValue="all">
-            <SelectTrigger className="w-full">
-              <SelectValue placeholder="Select Category" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">All Categories</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
+      <div className="mb-12 flex flex-col items-center justify-between gap-4 sm:flex-row">
+        <Title
+          title="Read Our Posts"
+          subTitle="Posts & Articles from Top Website Developers in Kenya"
+        />
       </div>
 
       {/* Grid updated from 2 columns to 3 columns to match target layout */}
