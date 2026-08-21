@@ -132,12 +132,19 @@ const internalDocToHref = ({ linkNode }: { linkNode: SerializedLinkNode }) => {
 
   const slug = value.slug
 
-  return relationTo === 'posts' ||
-    relationTo === 'pages' ||
+  if (relationTo === 'pages') {
+    return slug === 'home' ? '/' : `/${slug}`
+  }
+
+  if (
+    relationTo === 'posts' ||
     relationTo === 'services' ||
     relationTo === 'projects'
-    ? `/${relationTo}/${slug}`
-    : `/${slug}`
+  ) {
+    return `/${relationTo}/${slug}`
+  }
+
+  return `/${slug}`
 }
 
 const jsxConverters: JSXConvertersFunction = ({ defaultConverters }) => ({
