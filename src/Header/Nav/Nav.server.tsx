@@ -22,8 +22,8 @@ export function DesktopNav({ items }: DesktopNavProps) {
     const currentPath = pathname || '/'
     const targetPath = href === '' ? '/' : href
 
-    if (targetPath === '/') {
-      return currentPath === '/'
+    if (targetPath === '/' || targetPath === '/pages/home') {
+      return currentPath === '/' || currentPath === '/pages/home'
     }
 
     return currentPath === targetPath || currentPath.startsWith(`${targetPath}/`)
@@ -33,8 +33,8 @@ export function DesktopNav({ items }: DesktopNavProps) {
     if (item.linkType === 'external') return item.externalUrl || '#'
     const internal = item.internal
     if (typeof internal === 'object' && internal !== null && 'slug' in internal) {
-      // Normalize both 'index' and empty/missing slugs directly to '/'
-      return !internal.slug || internal.slug === 'index' ? '/' : `/${internal.slug}`
+      const slug = internal.slug || 'home'
+      return `/pages/${slug}`
     }
     return '#'
   }

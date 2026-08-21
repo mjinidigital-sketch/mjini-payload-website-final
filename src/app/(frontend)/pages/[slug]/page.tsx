@@ -53,7 +53,6 @@ const queryPageBySlug = cache(async ({ slug }: { slug: string }) => {
 })
 
 // Resolves any pricingBlock entries in the layout into a flat `plans` array
-// so downstream components stay presentational (no Payload imports).
 async function resolveLayoutData(layout: Page['layout']) {
   if (!Array.isArray(layout)) return layout
 
@@ -98,7 +97,7 @@ async function resolveLayoutData(layout: Page['layout']) {
   )
 }
 
-// Dynamic Next.js Page Generation Handler
+// Dynamic Next.js Page Generation Handler — serves /pages/[slug]
 export default async function Page(props: Args) {
   const { slug = 'home' } = await props.params
   const url = `${getServerSideURL()}/pages/${slug}`
@@ -110,7 +109,6 @@ export default async function Page(props: Args) {
   }
 
   const resolvedLayout = await resolveLayoutData(page.layout)
-  // Fetch Google reviews, agency settings in parallel
   const payload = await getPayload({ config: configPromise })
 
   const [googleData, agencySettings] = await Promise.all([
@@ -136,7 +134,7 @@ export default async function Page(props: Args) {
     }),
     breadcrumbSchema({
       items: [
-        { name: 'Home', url: url },
+        { name: 'Home', url: getServerSideURL() },
         { name: page.title, url: url },
       ],
     }),
@@ -180,7 +178,7 @@ export default async function Page(props: Args) {
   )
 }
 
-// 2. Next.js Metadata Compiler capturing SEO plugin fields + manual properties
+// Next.js Metadata API
 export async function generateMetadata(props: Args): Promise<Metadata> {
   const { slug = 'home' } = await props.params
   const page = await queryPageBySlug({ slug })
@@ -195,11 +193,10 @@ export async function generateMetadata(props: Args): Promise<Metadata> {
     typeof meta.image === 'object' && meta.image !== null ? (meta.image as any).url : undefined
 
   const serverUrl = getServerSideURL()
-  const isHome = slug === 'home' || slug === '/'
   const canonicalUrl =
     meta.robots?.canonicalUrl ||
     meta.canonicalUrl ||
-    (isHome ? `${serverUrl}/` : `${serverUrl}/pages/${slug}`)
+    `${serverUrl}/pages/${slug}`
 
   return {
     title: meta.title || page.title,
@@ -231,7 +228,7 @@ export async function generateMetadata(props: Args): Promise<Metadata> {
   }
 }
 
-// Static generation route criteria mapping values down
+// Static generation for all pages at /pages/[slug]
 export async function generateStaticParams() {
   const payload = await getPayload({ config: configPromise })
   const pages = await payload.find({
@@ -245,5 +242,5 @@ export async function generateStaticParams() {
     },
   })
 
-  return pages.docs?.filter((doc) => doc.slug !== 'home').map(({ slug }) => ({ slug })) || []
+  return pages.docs?.filter((doc) => Boolean(doc?.slug)).map(({ slug }) => ({ slug })) || []
 }

@@ -10,7 +10,7 @@ import { PostHero } from '@/heros/PostHero'
 import ContentNavigation from '@/components/ContentNavigation'
 import { getServerSideURL } from '@/utilities/getURL'
 import { RelatedPosts } from '@/blocks/RelatedPosts/Component'
-import { Media } from '@/payload-types'
+import { Media, Page } from '@/payload-types'
 import Script from 'next/script'
 import SocialShareButtons from '@/components/SocialShareButton'
 import { articleSchema } from '@/components/Schemas/ArticleSchema'
@@ -26,6 +26,7 @@ import { getPersonSchemas } from '@/components/Schemas/PersonSchema'
 import { siteNavigationSchema } from '@/components/Schemas/SiteNavigationSchema'
 import { videoExplainerSchema } from '@/components/Schemas/VideoExplainerSchema'
 import { getGoogleReviews } from '@/utilities/getGoogleReviews'
+import { RenderBlocks } from '@/blocks/RenderBlocks'
 
 type Args = {
   params: Promise<{
@@ -63,6 +64,7 @@ const queryPostBySlug = cache(async ({ slug }: { slug: string }) => {
       location: true, // Custom Location/Geo targeting fields group
       social: true, // Custom OpenGraph and Twitter fields group
       jsonLDBlooks: true, // Custom repeating schema block array
+      layout: true,
     },
   })
 
@@ -82,6 +84,50 @@ export default async function Post({ params: paramsPromise }: Args) {
 
   const baseUrl = getServerSideURL()
   const postUrl = `${baseUrl}/posts/${post.slug}`
+
+  async function resolveLayoutData(layout: Page['layout']) {
+    if (!Array.isArray(layout)) return layout
+
+    const payload = await getPayload({ config: configPromise })
+
+    return Promise.all(
+      layout.map(async (block: any) => {
+        if (block?.blockType !== 'pricingBlock') return block
+
+        let docs: any[] = []
+
+        if (block.populateBy === 'service' && block.service) {
+          const serviceId = typeof block.service === 'object' ? block.service.id : block.service
+
+          if (serviceId) {
+            const result = await payload.find({
+              collection: 'pricing',
+              where: { service: { equals: serviceId } },
+              limit: block.limit ?? 6,
+              depth: 0,
+            })
+            docs = result.docs
+          }
+        } else if (block.populateBy === 'selection' && Array.isArray(block.selectedDocs)) {
+          const ids = block.selectedDocs
+            .map((d: any) => (typeof d === 'object' ? d.id : d))
+            .filter(Boolean)
+
+          if (ids.length > 0) {
+            const result = await payload.find({
+              collection: 'pricing',
+              where: { id: { in: ids } },
+              limit: ids.length,
+              depth: 0,
+            })
+            docs = result.docs
+          }
+        }
+
+        return { ...block, plans: docs }
+      }),
+    )
+  }
 
   // Fetch all dynamic data in parallel
   const payload = await getPayload({ config: configPromise })
@@ -117,6 +163,8 @@ export default async function Post({ params: paramsPromise }: Args) {
     videoExplainerSchema({}),
     ...personSchemas,
   ].filter(Boolean)
+
+  const resolvedLayout = await resolveLayoutData((post as any)?.layout)
 
   return (
     <>
@@ -176,6 +224,7 @@ export default async function Post({ params: paramsPromise }: Args) {
                 />
               )}
             </article>
+            <RenderBlocks blocks={resolvedLayout as Page['layout']} />
 
             {/* Sidebar Sticky Tracking Column Container */}
             <aside className="lg:sticky lg:top-24 lg:self-start mt-10">
