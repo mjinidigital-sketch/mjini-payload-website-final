@@ -50,7 +50,7 @@ export function MobileMenu({ items }: MobileMenuProps) {
     const internal = item.internal
     if (typeof internal === 'object' && internal !== null && 'slug' in internal) {
       const slug = internal.slug || 'home'
-      return `/pages/${slug}`
+      return slug === 'home' ? '/' : `/${slug}`
     }
     return '#'
   }
@@ -201,14 +201,14 @@ export function MobileMenu({ items }: MobileMenuProps) {
                   appearance="primary"
                   label="Get In Touch"
                   size="lg"
-                  url="/pages/contact"
+                  url="/contact"
                   className="w-full flex justify-center items-center rounded-full font-semibold py-3 text-base shadow-md shadow-primary/20 hover:shadow-lg transition-all"
                 />
                 <CMSLink
                   appearance="outline-accent"
                   label="Sign In"
                   size="lg"
-                  url="/pages/signin"
+                  url="/signin"
                   className="w-full flex justify-center items-center rounded-full font-semibold py-3 text-base border-2 transition-all"
                 />
               </div>

@@ -55,14 +55,14 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
                 label="Get In Touch"
                 appearance="outline"
                 size="lg"
-                url="/pages/contact"
+                url="/contact"
                 className="border-accent hover:bg-accent/10 text-xs group inline-flex items-center justify-center rounded-full font-semibold py-2.5 px-6 shadow-lg transition-all duration-300 hover:-translate-y-1"
               />
               <CMSLink
                 appearance="default"
                 label="Sign In"
                 size="lg"
-                url="/pages/signin"
+                url="/signin"
                 className="text-xs group inline-flex  items-center justify-center rounded-full font-semibold py-2.5 px-6 shadow-lg border-accent transition-all duration-300 hover:-translate-y-1"
               />
             </div>

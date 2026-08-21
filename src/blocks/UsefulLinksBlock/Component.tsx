@@ -50,14 +50,14 @@ function resolveReferenceHref(ref: UsefulLinkItem['reference']): string {
       return slug ? `/projects/${slug}` : '/projects'
     }
     if (relationTo === 'pages') {
-      return slug ? `/pages/${slug}` : '/pages/home'
+      return slug ? (slug === 'home' ? '/' : `/${slug}`) : '/'
     }
   }
 
   // Handle direct document object
   if (typeof ref === 'object' && ref !== null && 'slug' in ref) {
     const slug = (ref as { slug?: string }).slug
-    if (slug) return `/pages/${slug}`
+    if (slug) return slug === 'home' ? '/' : `/${slug}`
   }
 
   return '#'

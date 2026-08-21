@@ -139,7 +139,7 @@ export const ServiceHero: React.FC<ServiceHeroProps> = ({
               <ArrowUpRight className="ml-1.5 size-4 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
             </CMSLink>
           ) : (
-            <Link href="/pages/contact">
+            <Link href="/contact">
               <Button
                 size="lg"
                 className=" group h-12 w-full rounded-full px-6 shadow-sm sm:w-auto"

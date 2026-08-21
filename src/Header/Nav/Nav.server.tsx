@@ -22,8 +22,8 @@ export function DesktopNav({ items }: DesktopNavProps) {
     const currentPath = pathname || '/'
     const targetPath = href === '' ? '/' : href
 
-    if (targetPath === '/' || targetPath === '/pages/home') {
-      return currentPath === '/' || currentPath === '/pages/home'
+    if (targetPath === '/' || targetPath === '/home') {
+      return currentPath === '/' || currentPath === '/home'
     }
 
     return currentPath === targetPath || currentPath.startsWith(`${targetPath}/`)
@@ -34,7 +34,7 @@ export function DesktopNav({ items }: DesktopNavProps) {
     const internal = item.internal
     if (typeof internal === 'object' && internal !== null && 'slug' in internal) {
       const slug = internal.slug || 'home'
-      return `/pages/${slug}`
+      return slug === 'home' ? '/' : `/${slug}`
     }
     return '#'
   }

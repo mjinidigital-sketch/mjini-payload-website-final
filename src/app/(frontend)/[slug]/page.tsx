@@ -101,7 +101,7 @@ async function resolveLayoutData(layout: Page['layout']) {
 // Dynamic Next.js Page Generation Handler
 export default async function Page(props: Args) {
   const { slug = 'home' } = await props.params
-  const url = `${getServerSideURL()}/pages/${slug}`
+  const url = `${getServerSideURL()}/${slug}`
 
   const page = await queryPageBySlug({ slug })
 
@@ -199,7 +199,7 @@ export async function generateMetadata(props: Args): Promise<Metadata> {
   const canonicalUrl =
     meta.robots?.canonicalUrl ||
     meta.canonicalUrl ||
-    (isHome ? `${serverUrl}/` : `${serverUrl}/pages/${slug}`)
+    (isHome ? `${serverUrl}/` : `${serverUrl}/${slug}`)
 
   return {
     title: meta.title || page.title,
