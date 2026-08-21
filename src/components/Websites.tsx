@@ -1005,7 +1005,7 @@ export default function Websites() {
 
   return (
     <section className="bg-gradient-to-br from-muted/30 to-background/70 dark:from-background/80 dark:to-muted/20 py-20">
-      <div className="mx-auto max-w-7xl px-6 md:px-12 lg:px-16">
+      <div className="container mx-auto">
         <div className="flex flex-col gap-10 md:flex-row md:gap-16">
           <div className="md:w-2/5">
             <div className="sticky top-24">
@@ -1014,13 +1014,11 @@ export default function Websites() {
                 Website & Applications for Businesses
               </div>
               <h2 className="mb-4 text-balance text-4xl font-extrabold tracking-tight text-foreground md:text-5xl">
-                Catapult Your Business with Our AI Powered{' '}
-                <span className="text-primary">Websites & Applications</span>
+                Business <span className="text-primary">Websites & Applications</span>
               </h2>
-              <p className="text-muted-foreground mt-4 text-base">
-                Discover how our AI powered website solutions can transform your business. As the
-                leading website developers in Nairobi, we deliver fast, powerful and fully
-                SEO-optimized websites that drive results.
+              <p className="text-muted-foreground mt-4 text-sm">
+                As the leading website developers in Nairobi, we deliver fast, powerful and fully
+                SEO-optimized websites and applications that drive results.
               </p>
               <div className="mt-8 rounded-xl bg-primary/5 p-6 border border-border/50">
                 <h3 className="font-semibold text-lg flex items-center mb-4 ">
