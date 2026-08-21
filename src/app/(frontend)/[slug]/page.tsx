@@ -25,6 +25,7 @@ import { videoExplainerSchema } from '@/components/Schemas/VideoExplainerSchema'
 import { getGoogleReviews } from '@/utilities/getGoogleReviews'
 import Script from 'next/script'
 import SocialShareButtons from '@/components/SocialShareButton'
+import Websites from '@/components/Websites'
 
 type Args = {
   params: Promise<{
@@ -161,6 +162,7 @@ export default async function Page(props: Args) {
         {/* Render core user interfaces */}
         <RenderHero {...page.hero} />
         <RenderBlocks blocks={resolvedLayout as Page['layout']} />
+        <Websites />
 
         {/* Social Share — bottom of each page, meta values from Payload SEO fields */}
         <div className="container mx-auto max-w-4xl px-4 md:px-8 pb-8">
